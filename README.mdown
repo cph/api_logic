@@ -1,0 +1,81 @@
+# API Logic
+
+A lightweight mixin for making API controllers
+
+# Usage
+
+Extend a controller with `ApiLogic` and call `exposes_model`
+to generate the default REST actions.
+    
+    class MyApiController < ApplicationController
+      extend ApiLogic
+      exposes_model Widget
+      respond_to :json, :xml
+    end
+    
+or if the controller's name looks like #{resource}ApiController then
+exposes_model will automatically be called with the resource:
+    
+    class CalendarApiController < ApplicationController
+      extend ApiLogic
+      respond_to :json, :xml
+    end
+    
+# Customization
+
+### Responder
+
+ApiLogic calls `respond_with` for each REST action, so you can change
+how it renders by replacing the Responder:
+
+    class CalendarApiController < ApplicationController
+      extend ApiLogic
+      responder = MyResponder
+      respond_to :json, :xml
+    end
+
+### Templates
+
+The recommended way of customizing how a model is rendered to JSON or XML
+is to supply a RABL template for the action.
+
+### Overriding methods
+
+You can always override one of ApiLogic's actions by defining your own, but
+ApiLogic gives a few finer-grained ways of controlling its default behavior.
+
+You can override the method `find_models` to change how the index action
+fetches models. By default `find_models` looks like this:
+
+    def find_models
+      model_class.all
+    end
+
+You can override the method `find_model` to change how the show, update, and
+destroy actions look up a model for the given URL. By default `find_model` looks
+like this:
+
+    def find_model
+      @model = model_class.find(params[:id])
+      instance_variable_set "@#{model_singular}", @model
+    end
+
+`create_attributes` and `update_attributes` return the attributes supplied
+to `model_class.create` and `@model.update_attributes` in the create and 
+update actions. Their default implementations are:
+
+    def create_attributes
+      model_params
+    end
+
+    def update_attributes
+      model_params
+    end
+
+And, finally, you can change how a model's attributes are pulled out of params
+by overriding `model_params`. Its default implementation looks like this:
+
+    def model_params
+      params[model_singular]
+    end
+

@@ -7,6 +7,8 @@ module ApiLogic
   
   
   included do
+    self.responder = ::ApiLogic::Responder
+    
     guess_model
     
     def self.inherited(subclass)
@@ -19,7 +21,6 @@ module ApiLogic
   
   module ClassMethods
     
-    resonder = ::ApiLogic::Responder
     
     attr_reader :model_class
     alias :model :model_class

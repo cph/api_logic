@@ -34,6 +34,11 @@ module ApiLogic
     end
     
     
+    def display(resource, given_options={})
+      super resource, given_options.merge(:callback => controller.params[:callback])
+    end
+    
+    
   end
 end
 

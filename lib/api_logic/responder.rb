@@ -9,7 +9,7 @@ module ApiLogic
       # api_behavior checks for errors in Rails 3.0.3, but not in Rails
       # 3.1.0. To be sure that we behave correctly, check here.
       if has_errors? && !get?
-        controller.render format => resource.errors, :status => :unprocessable_entity
+        controller.render format => {:errors => resource.errors}, :status => :unprocessable_entity
         
       else
         

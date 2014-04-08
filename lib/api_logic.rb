@@ -32,8 +32,9 @@ module ApiLogic
       # puts "[api_logic] guessing model for #{self.name}"
       if self.name =~ /(?:.*::)(.*?)ApiController/
         model_name = $1.singularize
+        return if model_name.blank?
         begin
-          exposes_model $1.singularize.constantize
+          exposes_model model_name.constantize
         rescue NameError
           # puts "  there is no model \"#{model_name}\""
         end

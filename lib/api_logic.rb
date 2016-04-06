@@ -4,6 +4,7 @@ require "api_logic/responder"
 module ApiLogic
   extend ActiveSupport::Concern
 
+  class ModelNotFoundError < StandardError; end
 
 
   included do
@@ -97,6 +98,7 @@ protected
   def find_model
     return unless model_class
     @model = model_class.find(params[:id])
+    raise ApiLogic::ModelNotFoundError unless @model
     instance_variable_set "@#{model_singular}", @model
   end
 

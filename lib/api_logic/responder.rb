@@ -1,4 +1,4 @@
-require 'action_controller/metal/responder'
+require 'action_controller/responder'
 
 module ApiLogic
   class Responder < ActionController::Responder
@@ -20,15 +20,10 @@ module ApiLogic
         # :to_#{format}, fall back to the default render functionality.
         #
         template_path = File.join(controller.controller_path, controller.action_name)
-        if resource.nil? || !resourceful? || controller.template_exists?(template_path)
+        if resource.nil? || !has_renderer? || controller.template_exists?(template_path)
           render
         else
-          
-          # api_behavior takes as a parameter the error it will throw if
-          # the resource does not respond to :to_#{format}. (Since we've
-          # already checked :resourceful?, this error should never be thrown,
-          # but just in case, we'll supply NotImplementedError.)
-          api_behavior(NotImplementedError)
+          api_behavior
         end
       end
     end

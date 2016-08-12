@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
   
   s.add_dependency "activesupport"
   s.add_dependency "actionpack"
+  s.add_dependency "responders" #, "~> 2.0" # extracted from Rails 4.2
   
   s.files         = Dir.glob("{lib}/**/*") + %w(Gemfile Rakefile README.mdown)
   s.test_files    = []

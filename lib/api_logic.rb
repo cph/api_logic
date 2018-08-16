@@ -9,7 +9,7 @@ module ApiLogic
   included do
     self.responder = ::ApiLogic::Responder
 
-    before_filter :find_model, :only => [:show, :update, :destroy]
+    before_action :find_model, :only => [:show, :update, :destroy]
 
     guess_model
 

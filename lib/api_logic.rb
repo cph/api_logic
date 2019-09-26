@@ -75,7 +75,7 @@ module ApiLogic
   def update
     raise NotImplementedError unless model_class
 
-    @model.update_attributes(update_attributes)
+    @model.update(update_attributes)
     respond_with @model
   end
 
